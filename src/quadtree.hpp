@@ -26,3 +26,5 @@ struct QuadTreeNode
 
 
 struct QuadTreeNode* create_quad_tree_node(int x, int y, int w, int h, int lvl);
+
+void free_quadtreenode(struct QuadTreeNode* root);
