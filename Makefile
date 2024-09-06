@@ -3,8 +3,8 @@ BUILD_DIR = build
 INCLUDE_DIR = C:\libraries\SFML-2.5.1\include
 LIB_DIR = C:\libraries\SFML-2.5.1\lib
 
-SRC_FILES = $(SRC_DIR)/main.cpp $(SRC_DIR)/vector_functions.cpp
-OBJ_FILES = $(BUILD_DIR)/main.o $(BUILD_DIR)/vector_functions.o
+SRC_FILES = $(SRC_DIR)/main.cpp $(SRC_DIR)/vector_functions.cpp $(SRC_DIR)/circle_logic.cpp
+OBJ_FILES = $(BUILD_DIR)/main.o $(BUILD_DIR)/vector_functions.o $(BUILD_DIR)/circle_logic.o
 EXECUTABLE = $(BUILD_DIR)/main
 
 CXX = g++
@@ -20,6 +20,9 @@ $(BUILD_DIR)/main.o: $(SRC_DIR)/main.cpp | $(BUILD_DIR)
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 $(BUILD_DIR)/vector_functions.o: $(SRC_DIR)/vector_functions.cpp | $(BUILD_DIR)
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
+
+$(BUILD_DIR)/circle_logic.o: $(SRC_DIR)/circle_logic.cpp | $(BUILD_DIR)
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 $(EXECUTABLE): $(OBJ_FILES)
