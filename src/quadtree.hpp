@@ -18,6 +18,7 @@ struct QuadTreeNode
     int x,y;
     int w,h;
     int lvl;
+    int entity_count;
     struct EntityNode* entities;
     struct QuadTreeNode* children[CHILD_COUNT];
 };
