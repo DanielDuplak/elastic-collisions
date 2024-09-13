@@ -90,7 +90,7 @@ int is_inside_boundary(struct QuadTreeNode* node, struct Circle* entity)
             (cy0 >= node->y && cy0 <= (node->y+node->h)) || (cy1 >= node->y && cy1 <= (node->y+node->h)) );
 }
 
-
+//toto treba akoze dokladne pretestovat, bo ked toto bude fakt fungovat, ta lignem tyc
 void insert(struct QuadTreeNode* node, struct Circle* entity)
 {
     if(node == NULL || entity == NULL)
@@ -101,6 +101,7 @@ void insert(struct QuadTreeNode* node, struct Circle* entity)
     if(node->entity_count < MAX_ENTITY_COUNT || node->lvl == MAX_LVL)
     {
         insert_entity_to_list(node->entities, entity);
+        node->entity_count += 1;
     }
     else
     {
@@ -111,7 +112,27 @@ void insert(struct QuadTreeNode* node, struct Circle* entity)
             node->children[2] = create_quad_tree_node(node->x, node->y+node->h/2, node->w/2, node->y/2, node->lvl+1);
             node->children[3] = create_quad_tree_node(node->x+node->w/2, node->y+node->h/2, node->w/2, node->y/2, node->lvl+1);
 
-            
+            struct EntityNode* temp = node->entities;
+            while(temp != NULL)
+            {
+                for(int i = 0; i < CHILD_COUNT; i++)
+                {
+                    if(is_inside_boundary(node->children[i], temp->entity))
+                    {
+                        insert(node->children[i], temp->entity);
+                    }
+                }
+                temp = temp->next;
+            }
+            free_entities(node->entities);
+            node->entities = NULL;
+        }
+        for(int i = 0; i < CHILD_COUNT; i++)
+        {
+            if(is_inside_boundary(node->children[i], entity))
+            {
+                insert(node->children[i], entity);
+            }
         }
     }
 }
