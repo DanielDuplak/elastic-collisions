@@ -78,6 +78,18 @@ void insert_entity_to_list(struct EntityNode* first, struct Circle* entity_to_in
 
 }
 
+int is_inside_boundary(struct QuadTreeNode* node, struct Circle* entity)
+{
+    float radius = entity->shape.getRadius();
+    float cx0 = entity->position.x - radius;
+    float cx1 = entity->position.x + radius;
+    float cy0 = entity->position.y - radius;
+    float cy1 = entity->position.y + radius;
+
+    return( (cx0 >= node->x && cx0 <= (node->x+node->w)) || (cx1 >= node->x && cx1 <= (node->x+node->w)) ||
+            (cy0 >= node->y && cy0 <= (node->y+node->h)) || (cy1 >= node->y && cy1 <= (node->y+node->h)) );
+}
+
 
 void insert(struct QuadTreeNode* node, struct Circle* entity)
 {
@@ -88,6 +100,18 @@ void insert(struct QuadTreeNode* node, struct Circle* entity)
 
     if(node->entity_count < MAX_ENTITY_COUNT || node->lvl == MAX_LVL)
     {
+        insert_entity_to_list(node->entities, entity);
+    }
+    else
+    {
+        if(node->children[0] == NULL)
+        {
+            node->children[0] = create_quad_tree_node(node->x, node->y, node->w/2, node->y/2, node->lvl+1);
+            node->children[1] = create_quad_tree_node(node->x+node->w/2, node->y, node->w/2, node->y/2, node->lvl+1);
+            node->children[2] = create_quad_tree_node(node->x, node->y+node->h/2, node->w/2, node->y/2, node->lvl+1);
+            node->children[3] = create_quad_tree_node(node->x+node->w/2, node->y+node->h/2, node->w/2, node->y/2, node->lvl+1);
 
+            
+        }
     }
 }
